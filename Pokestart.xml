@@ -1,0 +1,205 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
+	..\..\FrameXML\UI.xsd">
+	<Script File="Pokestart.lua"/>
+<!-- Scripts-->
+	<Frame name="PokestartScripts">
+		<Scripts>
+			<OnLoad>
+				Pokestart_OnLoad();
+			</OnLoad>
+		</Scripts>
+	</Frame>
+	<Frame name="PokestartMain" parent="UIParent" toplevel="true" frameStrata="DIALOG" hidden="true">
+		<Size>
+			<AbsDimension x="500" y="200"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Frames>
+			<Button name="$parent_Pokemon1Button" inherits="UIPanelButtonTemplate" text="Bulbasaur">
+				<Size>
+					<AbsDimension x="80" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="50" y="-150"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Pokestart_SelectStarter(1);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Pokemon2Button" inherits="UIPanelButtonTemplate" text="Charmander">
+				<Size>
+					<AbsDimension x="80" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="210" y="-150"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Pokestart_SelectStarter(4);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Pokemon3Button" inherits="UIPanelButtonTemplate" text="Squirtle">
+				<Size>
+					<AbsDimension x="80" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="370" y="-150"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Pokestart_SelectStarter(7);</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parent_Pokemon1Sprite" file="Interface\AddOns\Pokewow\Resources\1.tga" alphaMode="ALPHAKEY">
+					<Size>
+						<AbsDimension x="105" y="95"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="43" y="-40"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_Pokemon2Sprite" file="Interface\AddOns\Pokewow\Resources\4.tga" alphaMode="ALPHAKEY">
+					<Size>
+						<AbsDimension x="105" y="95"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="198" y="-40"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_Pokemon3Sprite" file="Interface\AddOns\Pokewow\Resources\7.tga" alphaMode="ALPHAKEY">
+					<Size>
+						<AbsDimension x="105" y="95"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="345" y="-40"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		</Frame>
+		<Frame name="PokestartRename" parent="PokestartMain" toplevel="true" frameStrata="DIALOG" hidden="true">
+		<Size>
+			<AbsDimension x="200" y="100"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Frames>
+			<EditBox name="$parent_Namebox" letters="80">
+				<Size x="80" y="32" />
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="60" y="-10" />
+					</Anchor>
+				</Anchors><Layers>
+					<Layer level="BORDER">
+						<Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+							<Size>
+								<AbsDimension x="8" y="32"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="-5" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+							<Size>
+								<AbsDimension x="8" y="32"/>
+							</Size>
+							<Anchors>
+								<Anchor point="RIGHT">
+									<Offset>
+										<AbsDimension x="5" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+							<Size>
+								<AbsDimension x="10" y="20"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+								<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<FontString inherits="ChatFontNormal" />
+			</EditBox>
+			<Button name="$parent_RenameButton" inherits="UIPanelButtonTemplate" text="Rename">
+				<Size>
+					<AbsDimension x="80" y="25" />
+				</Size>
+				
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="60" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Pokestart_Rename();</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+</Ui>

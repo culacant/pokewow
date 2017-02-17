@@ -1,0 +1,28 @@
+## Interface: 20400
+## Title: Pokewow
+## Notes V1.0
+
+##SavedVariables: savedpokemon, savedmovesets
+
+# the pokemon database
+Pokebase.lua
+Movebase.lua
+
+# the pokemon inventory
+Pokeinv.lua
+
+# starter pokemon
+Pokestart.xml
+Pokestart.lua
+
+# pokewow
+Pokewow.xml
+Pokewow.lua
+
+# the pokedex
+Pokedex.xml
+Pokedex.lua
+
+# pokemon fight stuff
+Pokefight.xml
+Pokefight.lua

@@ -1,0 +1,823 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Script file="Pokefight.lua" />
+	<!-- Scripts -->
+	<Frame name="PokefightScripts">
+		<Scripts>
+			<OnLoad>
+				Pokefight_OnLoad();
+			</OnLoad>
+		</Scripts>
+	</Frame>
+	<Frame name="PokefightDuelDialog" parent="UIParent" toplevel="true" enableMouse="true" hidden="true" frameStrata="DIALOG">
+		<Size>
+			<AbsDimension x="250" y="100" />
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" />
+		</Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Frames>
+			<Button name="DuelAccept" inherits="UIPanelButtonTemplate" text="Accept">
+				<Size>
+					<AbsDimension x="80" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset>
+							<AbsDimension x="-50" y="-20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>DuelAccept();</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="DuelDecline" inherits="UIPanelButtonTemplate" text="Decline">
+				<Size>
+					<AbsDimension x="80" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset>
+							<AbsDimension x="50" y="-20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>DuelDecline();</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+	<Frame name="PokefightMain" parent="UIParent" toplevel="true" movable="true" enableMouse="true" hidden="true" frameStrata="DIALOG">
+		<Size>
+			<AbsDimension x="960" y="768" />
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" />
+		</Anchors>
+		<Frames>
+			<Button name="$parent_CloseButton" inherits="UIPanelCloseButton">
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="922" y="3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parent_SwitchButton" inherits="UIPanelButtonTemplate" text="Pokemon">
+				<Size>
+					<AbsDimension x="100" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="820" y="-570"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Pokefight_PokemonDialog();</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Move1" inherits="UIPanelButtonTemplate" text="move1">
+				<Size>
+					<AbsDimension x="100" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="820" y="-610"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnter>Pokefight_MoveInfo(1);</OnEnter>
+					<OnClick>Pokefight_Attack(1);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Move2" inherits="UIPanelButtonTemplate" text="move2">
+				<Size>
+					<AbsDimension x="100" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="820" y="-640"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnter>Pokefight_MoveInfo(2);</OnEnter>
+					<OnClick>Pokefight_Attack(2);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Move3" inherits="UIPanelButtonTemplate" text="move3">
+				<Size>
+					<AbsDimension x="100" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="820" y="-670"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnter>Pokefight_MoveInfo(3);</OnEnter>
+					<OnClick>Pokefight_Attack(3);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Move4" inherits="UIPanelButtonTemplate" text="move4">
+				<Size>
+					<AbsDimension x="100" y="25" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="820" y="-700"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnter>Pokefight_MoveInfo(4);</OnEnter>
+					<OnClick>Pokefight_Attack(4);</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parent_bg" file="Interface\AddOns\Pokewow\Resources\Pokefight.tga">
+					<Size>
+						<AbsDimension x="960" y="768"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parent_MoveDesc" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="">
+					<FontHeight>
+						<AbsValue val="13"/>
+					</FontHeight>
+					<size x="256" y="80"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="500" y="-600"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_MoveTypeString" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="TYPE:">
+					<FontHeight>
+						<AbsValue val="20"/>
+					</FontHeight>
+					<size x="256" y="80"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="500" y="-655"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<Texture name="$parent_MoveType" file="Interface\AddOns\Pokewow\Resources\types.tga">
+					<Size>
+						<AbsDimension x="25" y="25"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="575" y="-648"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				
+				<Texture name="$parent_MovePP" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="150" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="550" y="-680"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString name="$parent_PPLabel" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="PP:">
+					<FontHeight>
+						<AbsValue val="20"/>
+					</FontHeight>
+					<size x="256" y="80"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="500" y="-680"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				
+				<FontString name="$parent_PPText" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="X/X">
+					<FontHeight>
+						<AbsValue val="13"/>
+					</FontHeight>
+					<size x="256" y="80"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="610" y="-682"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_CombatLog" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="">
+					<FontHeight>
+						<AbsValue val="13"/>
+					</FontHeight>
+					<size x="256" y="80"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="50" y="-650"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+-- MY STUFF
+				<Texture name="$parent_Pokemon1" alphaMode="BLEND" file="Interface\AddOns\Pokewow\Resources\1.tga">
+					<Size>
+						<AbsDimension x="256" y="256"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="20" y="-300"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				
+				<FontString name="$parent_p1Name" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="RIGHT" text="ROFLOMON|nLVL. 4">
+					<FontHeight>
+						<AbsValue val="20"/>
+					</FontHeight>
+					<Color a="1" r="0" g="1" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="750" y="-350"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<Texture name="$parent_p1HP" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="300" y="35"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="570" y="-400"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				
+				<FontString name="$parent_p1HPText" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="X/X">
+					<FontHeight>
+						<AbsValue val="25"/>
+					</FontHeight>
+					<size x="256" y="80"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="670" y="-407"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+-- OPPONENT STUFF
+				<Texture name="$parent_Pokemon2" alphaMode="BLEND" file="Interface\AddOns\Pokewow\Resources\112.tga">
+					<Size>
+						<AbsDimension x="256" y="256"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="680" y="-20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString name="$parent_p2Name" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="RIGHT" text="KEKKOOMON|nLVL. 3">
+					<FontHeight>
+						<AbsValue val="20"/>
+					</FontHeight>
+					<Color a="1" r="0" g="1" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="235" y="-50"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<Texture name="$parent_p2HP" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="300" y="35"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="70" y="-100"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString name="$parent_p2HPText" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="X/X">
+					<FontHeight>
+						<AbsValue val="25"/>
+					</FontHeight>
+					<size x="256" y="80"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="170" y="-107"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>PokefightMain_OnLoad();</OnLoad>
+			<OnMouseDown>self:StartMoving();</OnMouseDown>
+			<OnMouseUp>self:StopMovingOrSizing();</OnMouseUp>
+		</Scripts>
+	</Frame>
+	
+	<Frame name="Pokebelt" parent="PokefightMain" toplevel="true" enableMouse="false" hidden="true">
+		<Size>
+			<AbsDimension x="256" y="512" />
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" />
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parent_bg" file="Interface\AddOns\Pokewow\Resources\Pokebelt.tga">
+					<Size>
+						<AbsDimension x="256" y="512"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+<!-- pokeballs-->
+			<Button name="$parent_Pokeball1" inherits="UIPanelButtonTemplate">
+				<Size>
+					<AbsDimension x="50" y="50"/>
+				</Size>
+				<Anchors>
+					<Anchor point = "TOPLEFT">
+						<Offset>
+							<AbsDimension x="15" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Switch(1);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Pokeball2" inherits="UIPanelButtonTemplate">
+				<Size>
+					<AbsDimension x="50" y="50"/>
+				</Size>
+				<Anchors>
+					<Anchor point = "TOPLEFT">
+						<Offset>
+							<AbsDimension x="15" y="-110"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Switch(2);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Pokeball3" inherits="UIPanelButtonTemplate">
+				<Size>
+					<AbsDimension x="50" y="50"/>
+				</Size>
+				<Anchors>
+					<Anchor point = "TOPLEFT">
+						<Offset>
+							<AbsDimension x="15" y="-190"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Switch(3);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Pokeball4" inherits="UIPanelButtonTemplate">
+				<Size>
+					<AbsDimension x="50" y="50"/>
+				</Size>
+				<Anchors>
+					<Anchor point = "TOPLEFT">
+						<Offset>
+							<AbsDimension x="15" y="-270"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Switch(4);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Pokeball5" inherits="UIPanelButtonTemplate">
+				<Size>
+					<AbsDimension x="50" y="50"/>
+				</Size>
+				<Anchors>
+					<Anchor point = "TOPLEFT">
+						<Offset>
+							<AbsDimension x="15" y="-350"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Switch(5);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Pokeball6" inherits="UIPanelButtonTemplate">
+				<Size>
+					<AbsDimension x="50" y="50"/>
+				</Size>
+				<Anchors>
+					<Anchor point = "TOPLEFT">
+						<Offset>
+							<AbsDimension x="15" y="-430"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Switch(6);</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parent_hpBar1" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-50"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_hpBar2" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-130"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_hpBar3" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-210"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_hpBar4" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-290"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_hpBar5" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-370"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_hpBar6" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-450"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_xpBar1" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-69"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_xpBar2" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-149"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_xpBar3" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-229"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_xpBar4" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-309"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_xpBar5" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-389"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_xpBar6" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="116" y="9"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="88" y="-469"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString name="$parent_Name1" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="200" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="83" y="-35"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_Name2" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="200" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="83" y="-115"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_Name3" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="200" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="83" y="-195"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_Name4" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="200" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="83" y="-275"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_Name5" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="200" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="83" y="-355"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_Name6" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="LEFT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="200" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="83" y="-435"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_lvl1" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="RIGHT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="50" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="150" y="-35"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_lvl2" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="RIGHT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="50" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="150" y="-115"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_lvl3" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="RIGHT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="50" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="150" y="-195"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_lvl4" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="RIGHT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="50" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="150" y="-275"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_lvl5" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="RIGHT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="50" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="150" y="-355"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_lvl6" font="Fonts\skurri.ttf" justifyV="TOP" justifyH="RIGHT" text="">
+					<FontHeight>
+						<AbsValue val="12"/>
+					</FontHeight>
+					<size x="50" y="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="150" y="-435"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnShow>Pokebelt_OnShow();</OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

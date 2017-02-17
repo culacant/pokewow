@@ -1,0 +1,456 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
+	..\..\FrameXML\UI.xsd">
+	<Script File="Pokedex.lua"/>
+	<Script File="Pokefight.lua"/>
+<!-- Scripts-->
+	<Frame name="PokedexScripts">
+		<Scripts>
+			<OnLoad>
+				Pokedex_OnLoad();
+			</OnLoad>
+		</Scripts>
+	</Frame>
+<!-- Main frame-->
+	<Frame name="PokedexMain" movable="true" enableMouse="true" hidden="true" toplevel="true" frameStrata="DIALOG" parent="UIParent">
+		<Size>
+			<AbsDimension x="512" y="512"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Backdrop bgFile="Interface\AddOns\Pokewow\Resources\Pokedex.tga">
+		</Backdrop>
+		<Scripts>
+			<OnMouseDown>self:StartMoving();</OnMouseDown>
+			<OnMouseUp>self:StopMovingOrSizing();</OnMouseUp>
+		</Scripts>
+		<Frames>
+			<Button name="$parent_CloseButton" inherits="UIPanelCloseButton">
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="252" y="3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parent_PrevButton" inherits="UIPanelButtonTemplate" text="Prev">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors> 
+					<Anchor point="BOTTOM">
+						<Offset>
+							<AbsDimension x="-180" y="100"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> Pokedex_Prev();</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_NextButton" inherits="UIPanelButtonTemplate" text="Next">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors> 
+					<Anchor point="BOTTOM">
+						<Offset>
+							<AbsDimension x="-80" y="100"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> Pokedex_Next();</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_StatsButton" inherits="UIPanelButtonTemplate" text="Stats">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="360" y="-470"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> Pokedex_SwitchStats();</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Pokeball1" hidden="true" inherits="UIPanelButtonTemplate">
+				<size>
+					<AbsDimension x="20" y="20"/>
+				</size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="78" y="-430"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<scripts>
+					<OnClick> Pokedex_Pokeball_Click(1);</OnClick>
+				</scripts>
+			</Button>
+			<Button name="$parent_Pokeball2" hidden="true" inherits="UIPanelButtonTemplate">
+				<size>
+					<AbsDimension x="20" y="20"/>
+				</size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="113" y="-430"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<scripts>
+					<OnClick> Pokedex_Pokeball_Click(2);</OnClick>
+				</scripts>
+			</Button>
+			<Button name="$parent_Pokeball3" hidden="true" inherits="UIPanelButtonTemplate">
+				<size>
+					<AbsDimension x="20" y="20"/>
+				</size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="148" y="-430"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<scripts>
+					<OnClick> Pokedex_Pokeball_Click(3);</OnClick>
+				</scripts>
+			</Button>
+			<Button name="$parent_Pokeball4" hidden="true" inherits="UIPanelButtonTemplate">
+				<size>
+					<AbsDimension x="20" y="20"/>
+				</size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="78" y="-453"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<scripts>
+					<OnClick> Pokedex_Pokeball_Click(4);</OnClick>
+				</scripts>
+			</Button>
+			<Button name="$parent_Pokeball5" hidden="true" inherits="UIPanelButtonTemplate">
+				<size>
+					<AbsDimension x="20" y="20"/>
+				</size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="113" y="-453"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<scripts>
+					<OnClick> Pokedex_Pokeball_Click(5);</OnClick>
+				</scripts>
+			</Button>
+			<Button name="$parent_Pokeball6" hidden="true" inherits="UIPanelButtonTemplate">
+				<size>
+					<AbsDimension x="20" y="20"/>
+				</size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="148" y="-453"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<scripts>
+					<OnClick> Pokedex_Pokeball_Click(6);</OnClick>
+				</scripts>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parent_Sprite" alphaMode="ALPHAKEY">
+					<Size>
+						<AbsDimension x="210" y="190"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="20" y="-120"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+
+				<Texture name="$parent_Type1" file="Interface\AddOns\Pokewow\Resources\types.tga">
+					<Size>
+						<AbsDimension x="25" y="25"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="375" y="-247"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parent_Type2" file="Interface\AddOns\Pokewow\Resources\types.tga">
+					<Size>
+						<AbsDimension x="25" y="25"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="405" y="-247"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+
+				<FontString name="$parent_ID" inherits="GameFontNormal">
+					<FontHeight val="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="300" y="-105"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+				<FontString name="$parent_Desc" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP" wordwrap="true">
+					<size x="170" y="210"/>
+					<FontHeight val="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="300" y="-125"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+				<FontString name="$parent_BaseStats" inherits="GameFontNormal" justifyH="LEFT" text="Type:|n|nHP:|nAttack:|nDefence:|nSpecial:|nSpeed:|n">
+					<FontHeight val="12"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="310" y="-250"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+				<FontString name="$parent_PokeStats" inherits="GameFontNormal">
+					<FontHeight val="12"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="375" y="-278"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	<Frame name="Pokeinv" parent="PokedexMain" hidden="true">
+
+		<Size>
+			<AbsDimension x="256" y="256"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset>
+					<AbsDimension x="266" y="-235"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Backdrop bgFile="Interface\AddOns\Pokewow\Resources\Pokeinv.tga">
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parent_Name" inherits="GameFontNormal" justifyH="LEFT" >
+					<size x="100" y="20"/>
+					<FontHeight val="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="42" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<Texture name="$parent_hpBar" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="104" y="13"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="42" y="-34"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString name="$parent_hpText" inherits="GameFontNormal" justifyV="TOP">
+					<size x="100" y="20"/>
+					<FontHeight val="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="50" y="-34"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<Texture name="$parent_xpBar" file="Interface\AddOns\Pokewow\Resources\bar.tga">
+					<Size>
+						<AbsDimension x="104" y="13"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="42" y="-54"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString name="$parent_xpText" inherits="GameFontNormal" justifyV="TOP">
+					<size x="100" y="20"/>
+					<FontHeight val="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="50" y="-54"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_lvlText" inherits="GameFontNormal" justifyV="TOP" wordwrap="true" text="LVL 1">
+					<size x="100" y="20"/>
+					<FontHeight val="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="120" y="-54"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+<!-- Moveset -->
+				<FontString name="$parent_MoveStats" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP" text="Type:|nPower:|nAccuracy:|nPP:">
+					<size x="150" y="200"/>
+					<FontHeight val="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="42" y="-140"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					</FontString>
+					<FontString name="$parent_MoveStatValues" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP" text="1|n2|n3%|n4/5">
+					<size x="150" y="200"/>
+					<FontHeight val="15"/>
+					<Color a="1" r="0" g="0" b="0"/>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="130" y="-140"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<Texture name="$parent_MoveType" file="Interface\AddOns\Pokewow\Resources\types.tga">
+					<Size>
+						<AbsDimension x="12" y="12"/>
+					</Size>
+					<Anchors>
+						<Anchor point = "TOPLEFT">
+							<Offset>
+								<AbsDimension x="130" y="-140"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parent_Move1" inherits="UIPanelButtonTemplate" text="Move 1" hidden="true">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="45" y="-87"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+						<OnClick> Pokeinv_Move(1);</OnClick>
+					</Scripts>
+			</Button>
+			<Button name="$parent_Move2" inherits="UIPanelButtonTemplate" text="Move 2" hidden="true">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="130" y="-87"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> Pokeinv_Move(2);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Move3" inherits="UIPanelButtonTemplate" text="Move 3" hidden="true">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="45" y="-115"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> Pokeinv_Move(3);</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parent_Move4" inherits="UIPanelButtonTemplate" text="Move 4" hidden="true">
+				<Size>
+					<AbsDimension x="80" y="24"/>
+				</Size>
+				<Anchors> 
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="130" y="-115"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> Pokeinv_Move(4);</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+</Ui>
